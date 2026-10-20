@@ -1,105 +1,346 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080914">
-<title>DeltaX — Script Studio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10091e">
+<title>DeltaX Studio</title>
 <style>
-:root{--bg:#080914;--panel:#111426;--panel2:#0c1020;--line:#252b45;--text:#f6f6ff;--muted:#9ba4c4;--purple:#793cff;--purple2:#a16cff;--green:#68e6b1}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#17103b 0,#080914 48%);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;padding-bottom:calc(82px + env(safe-area-inset-bottom))}
-header{padding:calc(18px + env(safe-area-inset-top)) 18px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff0e}
-.brand{display:flex;gap:11px;align-items:center}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#a15bff,#5c20ed);display:grid;place-items:center;font-size:25px;font-weight:900;box-shadow:0 5px 22px #793cff55}.brand b{font-size:19px;letter-spacing:.3px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
-.pill{border:1px solid #54369a;background:#28184c;color:#d9c7ff;border-radius:999px;padding:7px 10px;font-size:11px}
-main{padding:18px;max-width:760px;margin:auto}.page{display:none}.page.active{display:block}.welcome{padding:18px 0 12px}.welcome h1{font-size:27px;margin:0 0 7px}.welcome p{color:var(--muted);line-height:1.45;margin:0}
-.card{background:linear-gradient(145deg,#15192d,#0d1020);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 10px 30px #0002}
-.card h2{font-size:16px;margin:0 0 12px}.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{padding:14px;background:#0b0e1c;border:1px solid var(--line);border-radius:14px}.stat strong{font-size:23px;display:block}.stat span{font-size:12px;color:var(--muted)}
-.btn{border:0;border-radius:12px;padding:12px 14px;background:linear-gradient(110deg,var(--purple),#6225ee);color:white;font-weight:700;font-size:14px;cursor:pointer}.btn.secondary{background:#171b30;border:1px solid #343b5b;color:#e8e8ff}.btn.danger{background:#351923;border:1px solid #693044;color:#ffc5d0}.btn.full{width:100%}.actions{display:flex;gap:9px;flex-wrap:wrap}.actions .btn{flex:1}
-.field,select{width:100%;background:#080c18;border:1px solid #2a3150;border-radius:11px;color:var(--text);padding:12px;font:14px inherit;outline:none}.field:focus,textarea:focus{border-color:var(--purple2)}
-label{display:block;color:#c9cee5;font-size:12px;margin:13px 0 7px}
-textarea#editor{width:100%;min-height:300px;resize:vertical;background:#070b15;color:#dcdcff;border:1px solid #2b3150;border-radius:13px;padding:14px;font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace;tab-size:2;outline:none}
-.note{font-size:12px;color:var(--muted);line-height:1.5}.script-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #252a40}.script-row:last-child{border-bottom:0}.fileicon{width:38px;height:42px;border-radius:10px;background:#241644;color:#bca0ff;display:grid;place-items:center;font-size:19px}.script-info{min-width:0;flex:1}.script-info strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.script-info small{color:var(--muted);font-size:11px}.tiny{padding:8px 10px;border-radius:9px;border:1px solid #343b5b;background:#171b30;color:#eee;font-size:12px}
-.console{background:#060a13;border:1px solid #252b45;border-radius:12px;min-height:190px;padding:12px;font:12px/1.7 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.ok{color:var(--green)}.warn{color:#ffd27a}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:5;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:#090b16ed;border-top:1px solid #282d45;backdrop-filter:blur(18px)}nav button{border:0;background:transparent;color:#929ab9;font-size:10px;padding:6px 0;display:flex;align-items:center;gap:4px;flex-direction:column}nav button span{font-size:20px}nav button.active{color:#bd9aff}
-.toggle{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid #252a40}.toggle:last-child{border:0}.toggle small{display:block;color:var(--muted);margin-top:4px}.toggle input{accent-color:var(--purple);width:20px;height:20px}
-body.light{--bg:#f4f4fb;--panel:#fff;--panel2:#f1f1fa;--line:#dddff0;--text:#17162a;--muted:#606783;background:#f4f4fb;color:var(--text)}body.light .card,body.light .stat{background:#fff}body.light .field,body.light textarea#editor,body.light .console{background:#f7f7fc;color:#222}body.light nav{background:#ffffffed}
-@media(min-width:600px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}main{padding-top:25px}}
+:root{color-scheme:dark;--bg:#10091e;--panel:#1b1430;--line:#49336d;--purple:#853fe8;--text:#f7f2ff;--muted:#bba8d5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
+header{padding:calc(18px + env(safe-area-inset-top)) 17px 18px;background:#1b1030;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#bd8aff,#702ce0);font-size:24px;font-weight:900}
+h1{font-size:21px;margin:0;color:#d1aaff}
+header p{color:var(--muted);margin:5px 0 0;font-size:12px}
+main{padding:15px;max-width:850px;margin:auto;padding-bottom:45px}
+.intro{padding:12px 2px 18px}
+.intro h2{font-size:27px;margin:0 0 8px}
+.intro p{color:var(--muted);line-height:1.5;margin:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:15px;min-width:0}
+h3{margin:0 0 14px;font-size:17px}
+label{display:block;font-size:12px;color:var(--muted);margin:12px 0 6px}
+input[type=text],textarea{width:100%;background:#0d0918;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:12px;font:14px inherit;outline:none}
+input[type=text]{font-size:14px}
+textarea{display:block;min-height:300px;resize:vertical;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2}
+input:focus,textarea:focus{border-color:#bd8aff}
+button,.upload{display:inline-block;background:var(--purple);color:white;border:0;border-radius:9px;padding:11px 13px;margin:5px 3px 3px 0;font-size:13px;font-weight:700;cursor:pointer}
+button.secondary,.upload.secondary{background:#302044;border:1px solid #63418b}
+button.danger{background:#512035;border:1px solid #853c60}
+button:active{opacity:.8}
+.actions{display:flex;flex-wrap:wrap;gap:5px}
+.actions button{flex:1}
+.note{font-size:12px;line-height:1.6;color:var(--muted)}
+#status{font-size:12px;color:#b9f5d7;overflow-wrap:anywhere}
+#saved{overflow-wrap:anywhere}
+.saved-row{padding:12px 0;border-bottom:1px solid var(--line)}
+.saved-row:last-child{border-bottom:0}
+.saved-title{font-weight:700;overflow-wrap:anywhere}
+.saved-actions{margin-top:5px}
+#console{background:#0b0813;border:1px solid var(--line);padding:12px;border-radius:9px;min-height:65px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 ui-monospace,monospace}
+footer{text-align:center;color:#75658b;font-size:11px;padding:8px 15px 24px}
+@media(min-width:600px){main{padding-top:25px}.intro h2{font-size:32px}textarea{min-height:390px}}
 </style>
 </head>
 <body>
-<header><div class="brand"><div class="logo">Δ</div><div><b>DeltaX Studio</b><small>Mobile script workspace</small></div></div><span class="pill">NO KEY SYSTEM</span></header>
+<header>
+  <div class="brand">
+    <div class="logo">Δ</div>
+    <div>
+      <h1>DeltaX Studio</h1>
+      <p>Mobile Lua Script Workspace</p>
+    </div>
+  </div>
+</header>
 <main>
-<section class="page active" id="home">
-<div class="welcome"><h1>Your workspace.</h1><p>Write and organize Lua scripts right from your iPhone.</p></div>
-<div class="stats"><div class="stat"><strong id="scriptCount">0</strong><span>Saved scripts</span></div><div class="stat"><strong>iOS</strong><span>Mobile ready</span></div><div class="stat"><strong>Lua</strong><span>Editor language</span></div><div class="stat"><strong class="ok">Free</strong><span>No key system</span></div></div>
-<div class="card"><h2>Quick actions</h2><div class="actions"><button class="btn" onclick="newScript()">＋ New script</button><button class="btn secondary" onclick="showPage('scripts')">▤ Saved scripts</button></div></div>
-<div class="card"><h2>Recent scripts</h2><div id="recentList"></div></div>
-<div class="card"><h2>About this app</h2><p class="note">This is a local script editor and organizer. It saves your work in this browser on this device. It does not inject code into Roblox or execute scripts inside the Roblox app.</p></div>
-</section>
-<section class="page" id="editorPage">
-<div class="welcome"><h1>Script editor</h1><p>Edit Lua text and save it on your phone.</p></div>
-<label for="scriptName">Script name</label><input class="field" id="scriptName" value="My Script.lua" maxlength="80">
-<label for="editor">Lua source</label><textarea id="editor" spellcheck="false" autocapitalize="off" autocomplete="off">-- Welcome to DeltaX Studio
--- Write your Lua script here.
+  <section class="intro">
+    <h2>Your scripts. Your workspace.</h2>
+    <p>Write, save, import, and export Lua script drafts right from your phone.</p>
+  </section>
+  <section class="card">
+    <h3>Script Editor</h3>
+    <label for="name">Script name</label>
+    <input id="name" type="text" value="MyScript.lua" maxlength="100">
+<label for="code">Lua source code</label>
+<textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off">-- Welcome to DeltaX Studio
 
-print("Hello from my script editor!")
-</textarea>
-<div class="actions" style="margin-top:11px"><button class="btn" onclick="saveScript()">Save script</button><button class="btn secondary" onclick="clearEditor()">Clear</button><button class="btn secondary" onclick="downloadScript()">Export .lua</button></div>
-<p class="note" style="margin-top:12px">For safety and compatibility, the Execute button in this editor checks your draft and shows a local preview only. It cannot run code inside Roblox on iOS.</p>
-<div class="actions"><button class="btn secondary full" onclick="previewScript()">▷ Preview / check draft</button></div>
-</section>
-<section class="page" id="scripts">
-<div class="welcome"><h1>Saved scripts</h1><p>Your scripts stay in this browser on this iPhone.</p></div>
-<div class="actions"><button class="btn" onclick="newScript()">＋ New script</button><button class="btn secondary" onclick="document.getElementById('importFile').click()">Import .lua</button><input id="importFile" type="file" accept=".lua,.txt,text/plain" hidden onchange="importScript(event)"></div>
-<div class="card" id="allScripts"></div>
-</section>
-<section class="page" id="consolePage">
-<div class="welcome"><h1>Console</h1><p>Local preview messages and editor checks.</p></div>
-<div class="card"><div class="actions" style="margin-bottom:12px"><button class="btn secondary" onclick="clearConsole()">Clear logs</button><button class="btn secondary" onclick="previewScript()">Check current draft</button></div><div class="console" id="consoleLog"><span class="ok">[INFO]</span> DeltaX Studio ready.
-[INFO] No key system.
-[INFO] Local editor mode enabled.</div></div>
-</section>
-<section class="page" id="settings">
-<div class="welcome"><h1>Settings</h1><p>Make the workspace yours.</p></div>
-<div class="card"><div class="toggle"><div><b>Dark mode</b><small>Use the black and purple theme</small></div><input id="darkToggle" type="checkbox" checked onchange="toggleTheme(this.checked)"></div><div class="toggle"><div><b>Auto-save draft</b><small>Keep your current editor text on this device</small></div><input id="autosaveToggle" type="checkbox" checked onchange="setAutosave(this.checked)"></div></div>
-<div class="card"><h2>Data</h2><p class="note">Scripts are stored in your browser's local storage. Clearing Safari website data can remove them. Export important scripts as .lua files for backup.</p><div class="actions"><button class="btn secondary" onclick="exportAll()">Export all scripts</button><button class="btn danger" onclick="deleteAll()">Delete all scripts</button></div></div>
-<div class="card"><h2>Version</h2><p class="note">DeltaX Studio · Mobile prototype · No key system</p></div>
-</section>
+– Write your Lua code here.
+
+print(“Hello, world!”)
+
+<div class="actions">
+  <button id="saveBtn">Save Script</button>
+  <button id="newBtn" class="secondary">New Script</button>
+  <button id="exportBtn" class="secondary">Export .lua</button>
+</div>
+<div class="actions">
+  <button id="importBtn" class="secondary">Import Script</button>
+  <button id="checkBtn" class="secondary">Check Draft</button>
+  <button id="clearBtn" class="danger">Clear Editor</button>
+</div>
+<input id="file" type="file" accept=".lua,.luau,.txt,text/plain" hidden>
+<p id="status">Ready. Your scripts are stored in this browser.</p>
+<p class="note">This is a Lua text editor and organizer. It does not inject scripts into Roblox or execute code inside the Roblox app.</p>
+  </section>
+  <section class="card">
+    <h3>My Saved Scripts</h3>
+    <div id="saved"></div>
+  </section>
+  <section class="card">
+    <h3>Script Checker Console</h3>
+    <div class="actions">
+      <button id="clearConsoleBtn" class="secondary">Clear Console</button>
+    </div>
+    <pre id="console">[INFO] DeltaX Studio ready.
+[INFO] Local editing enabled.</pre>
+  </section>
+  <section class="card">
+    <h3>Backup</h3>
+    <p class="note">Export your saved scripts as a backup file. Saved scripts stay in this browser, so clearing browser data may erase them.</p>
+    <div class="actions">
+      <button id="backupBtn">Export All Scripts</button>
+      <button id="deleteAllBtn" class="danger">Delete All Scripts</button>
+    </div>
+  </section>
 </main>
-<nav>
-<button class="active" data-page="home" onclick="showPage('home')"><span>⌂</span>Home</button>
-<button data-page="editorPage" onclick="showPage('editorPage')"><span>⌘</span>Editor</button>
-<button data-page="scripts" onclick="showPage('scripts')"><span>▤</span>Scripts</button>
-<button data-page="consolePage" onclick="showPage('consolePage')"><span>›_</span>Console</button>
-<button data-page="settings" onclick="showPage('settings')"><span>⚙</span>Settings</button>
-</nav>
+<footer>DeltaX Studio · Mobile-friendly · No key system</footer>
 <script>
-const STORE='deltax_studio_scripts_v1', DRAFT='deltax_studio_draft_v1', AUTO='deltax_studio_autosave_v1';
-let scripts=[];let autosave=true;let currentId=null;
-try{scripts=JSON.parse(localStorage.getItem(STORE)||'[]');if(!Array.isArray(scripts))scripts=[]}catch(e){scripts=[]}
-autosave=localStorage.getItem(AUTO)!=='false';
-const $=id=>document.getElementById(id);
-function persist(){localStorage.setItem(STORE,JSON.stringify(scripts));renderScripts()}
-function log(msg,cls=''){const el=$('consoleLog');el.innerHTML+=(el.textContent.trim()?'\n':'')+`<span class="${cls}">${escapeHtml(msg)}</span>`;el.scrollTop=el.scrollHeight}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='scripts'||id==='home')renderScripts();window.scrollTo(0,0)}
-function newScript(){currentId=null;$('scriptName').value='My Script.lua';$('editor').value='-- New Lua script\\n\\nprint("Hello!")';showPage('editorPage')}
-function saveScript(){let name=$('scriptName').value.trim()||'Untitled.lua';if(!name.toLowerCase().endsWith('.lua'))name+='.lua';let code=$('editor').value;let item=currentId?scripts.find(s=>s.id===currentId):null;if(item){item.name=name;item.code=code;item.updated=Date.now()}else{item={id:String(Date.now())+Math.random().toString(16).slice(2,6),name,code,updated:Date.now()};scripts.unshift(item);currentId=item.id}persist();localStorage.setItem(DRAFT,code);log('[SAVED] '+name,'ok');alert('Saved '+name+' on this device.')}
-function openScript(id){let s=scripts.find(x=>x.id===id);if(!s)return;currentId=s.id;$('scriptName').value=s.name;$('editor').value=s.code;showPage('editorPage')}
-function renderScripts(){ $('scriptCount').textContent=scripts.length;const row=s=>`<div class="script-row"><div class="fileicon">▤</div><div class="script-info"><strong>${escapeHtml(s.name)}</strong><small>${(s.code||'').length} characters · ${new Date(s.updated).toLocaleDateString()}</small></div><button class="tiny" onclick="openScript('${s.id}')">Open</button></div>`;$('allScripts').innerHTML=scripts.length?scripts.map(row).join(''):'<p class="note">No scripts saved yet. Tap “New script” to get started.</p>';$('recentList').innerHTML=scripts.length?scripts.slice(0,3).map(row).join(''):'<p class="note">Your recent scripts will appear here.</p>'}
-function clearEditor(){if(confirm('Clear the editor text?')){$('editor').value='';if(autosave)localStorage.setItem(DRAFT,'')}}
-function download(name,content,type='text/plain'){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function downloadScript(){let n=$('scriptName').value.trim()||'script.lua';if(!n.endsWith('.lua'))n+='.lua';download(n,$('editor').value);log('[EXPORT] Created '+n,'ok')}
-function importScript(e){const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{currentId=null;$('scriptName').value=f.name;$('editor').value=String(r.result||'');showPage('editorPage');log('[IMPORT] Loaded '+f.name,'ok')};r.readAsText(f);e.target.value=''}
-function previewScript(){const code=$('editor').value;showPage('consolePage');log('[CHECK] Draft has '+code.length+' characters.','ok');if(!code.trim())log('[NOTE] The draft is empty.','warn');else{const opens=(code.match(/[({[]/g)||[]).length,closes=(code.match(/[)}\]]/g)||[]).length;if(opens!==closes)log('[NOTE] Bracket counts differ; check your Lua syntax.','warn');else log('[INFO] Basic text check complete. This is not a full Lua compiler.','ok')}log('[LIMIT] No code was executed; Roblox injection is not supported.','warn')}
-function clearConsole(){$('consoleLog').textContent='[INFO] Console cleared.'}
-function toggleTheme(dark){document.body.classList.toggle('light',!dark);localStorage.setItem('deltax_studio_light',dark?'false':'true')}
-function setAutosave(v){autosave=v;localStorage.setItem(AUTO,String(v))}
-function exportAll(){download('deltax-scripts-backup.json',JSON.stringify(scripts,null,2),'application/json');log('[EXPORT] Script backup exported.','ok')}
-function deleteAll(){if(confirm('Delete every saved script from this browser? This cannot be undone.')){scripts=[];persist();log('[DATA] All saved scripts deleted.','warn')}}
-$('editor').addEventListener('input',()=>{if(autosave)localStorage.setItem(DRAFT,$('editor').value)});
-try{const d=localStorage.getItem(DRAFT);if(d!==null)$('editor').value=d;if(localStorage.getItem('deltax_studio_light')==='true'){$('darkToggle').checked=false;toggleTheme(false)}$('autosaveToggle').checked=autosave}catch(e){}
-renderScripts();
+'use strict';
+const $ = id => document.getElementById(id);
+const STORAGE_KEY = 'deltax_studio_scripts_v1';
+const DRAFT_KEY = 'deltax_studio_draft_v1';
+let scripts = [];
+let currentId = null;
+try {
+  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  scripts = Array.isArray(stored) ? stored : [];
+} catch (error) {
+  scripts = [];
+}
+function setStatus(message) {
+  $('status').textContent = message;
+}
+function log(message) {
+  const output = $('console');
+  output.textContent += '\n' + message;
+  output.scrollTop = output.scrollHeight;
+}
+function persist() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(scripts));
+    renderSaved();
+  } catch (error) {
+    setStatus('Could not save. Your browser storage may be full.');
+  }
+}
+function saveDraft() {
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify({
+      name: $('name').value,
+      code: $('code').value,
+      id: currentId
+    }));
+  } catch (error) {
+    // Editing can continue if local storage is unavailable.
+  }
+}
+function saveScript() {
+  let name = $('name').value.trim() || 'MyScript.lua';
+  if (!/\.lua(u)?$/i.test(name)) name += '.lua';
+  const code = $('code').value;
+  let existing = scripts.find(item => item.id === currentId);
+  if (existing) {
+    existing.name = name;
+    existing.code = code;
+    existing.updated = Date.now();
+  } else {
+    const item = {
+      id: Date.now().toString() + Math.random().toString(16).slice(2),
+      name: name,
+      code: code,
+      updated: Date.now()
+    };
+    scripts.unshift(item);
+    currentId = item.id;
+  }
+  persist();
+  saveDraft();
+  setStatus('Saved ' + name);
+  log('[SAVED] ' + name);
+}
+function newScript() {
+  currentId = null;
+  $('name').value = 'MyScript.lua';
+  $('code').value = '-- New Lua script\n\n';
+  saveDraft();
+  setStatus('New draft created.');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  $('code').focus();
+}
+function safeFilename(name) {
+  return name.replace(/[^\w.-]+/g, '_');
+}
+function downloadFile(filename, content, type) {
+  const blob = new Blob([content], {type: type || 'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = safeFilename(filename);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+function exportScript() {
+  let name = $('name').value.trim() || 'MyScript.lua';
+  if (!/\.lua(u)?$/i.test(name)) name += '.lua';
+  downloadFile(name, $('code').value);
+  setStatus('Exported ' + name);
+  log('[EXPORT] ' + name);
+}
+function importScript(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    currentId = null;
+    $('name').value = file.name;
+    $('code').value = String(reader.result || '');
+    saveDraft();
+    setStatus('Imported ' + file.name);
+    log('[IMPORT] ' + file.name);
+  };
+  reader.onerror = () => setStatus('Could not read that file.');
+  reader.readAsText(file);
+  event.target.value = '';
+}
+function openScript(id) {
+  const item = scripts.find(script => script.id === id);
+  if (!item) return;
+  currentId = item.id;
+  $('name').value = item.name;
+  $('code').value = item.code;
+  saveDraft();
+  setStatus('Opened ' + item.name);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+function deleteScript(id) {
+  const item = scripts.find(script => script.id === id);
+  if (!item || !confirm('Delete ' + item.name + '?')) return;
+  scripts = scripts.filter(script => script.id !== id);
+  if (currentId === id) currentId = null;
+  persist();
+  setStatus('Script deleted.');
+  log('[DELETE] ' + item.name);
+}
+function renderSaved() {
+  const container = $('saved');
+  container.replaceChildren();
+  if (!scripts.length) {
+    const empty = document.createElement('p');
+    empty.className = 'note';
+    empty.textContent = 'No saved scripts yet. Save a draft to see it here.';
+    container.appendChild(empty);
+    return;
+  }
+  scripts.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'saved-row';
+    const title = document.createElement('div');
+    title.className = 'saved-title';
+    title.textContent = item.name;
+    const info = document.createElement('p');
+    info.className = 'note';
+    info.textContent = String(item.code.length) + ' characters';
+    const actions = document.createElement('div');
+    actions.className = 'saved-actions';
+    const open = document.createElement('button');
+    open.textContent = 'Open';
+    open.onclick = () => openScript(item.id);
+    const exportButton = document.createElement('button');
+    exportButton.className = 'secondary';
+    exportButton.textContent = 'Export';
+    exportButton.onclick = () => {
+      let filename = item.name;
+      if (!/\.lua(u)?$/i.test(filename)) filename += '.lua';
+      downloadFile(filename, item.code);
+    };
+    const remove = document.createElement('button');
+    remove.className = 'danger';
+    remove.textContent = 'Delete';
+    remove.onclick = () => deleteScript(item.id);
+    actions.append(open, exportButton, remove);
+    row.append(title, info, actions);
+    container.appendChild(row);
+  });
+}
+function checkDraft() {
+  const code = $('code').value;
+  const issues = [];
+  if (!code.trim()) issues.push('The draft is empty.');
+  const pairs = [['(', ')'], ['{', '}'], ['[', ']']];
+  pairs.forEach(pair => {
+    const openCount = code.split(pair[0]).length - 1;
+    const closeCount = code.split(pair[1]).length - 1;
+    if (openCount !== closeCount) {
+      issues.push('Check matching ' + pair[0] + ' and ' + pair[1] + ' characters.');
+    }
+  });
+  if (!issues.length) {
+    issues.push('Basic text checks passed.');
+  }
+  issues.push('This is not a full Lua compiler. No code was executed.');
+  log('[CHECK]\n- ' + issues.join('\n- '));
+  setStatus('Draft check finished. See the console.');
+}
+function exportAll() {
+  downloadFile(
+    'deltax-scripts-backup.json',
+    JSON.stringify(scripts, null, 2),
+    'application/json'
+  );
+  log('[BACKUP] Exported saved scripts.');
+}
+function deleteAll() {
+  if (!confirm('Delete every saved script? This cannot be undone.')) return;
+  scripts = [];
+  currentId = null;
+  persist();
+  setStatus('All saved scripts deleted.');
+  log('[DELETE] All saved scripts removed.');
+}
+$('saveBtn').addEventListener('click', saveScript);
+$('newBtn').addEventListener('click', newScript);
+$('exportBtn').addEventListener('click', exportScript);
+$('importBtn').addEventListener('click', () => $('file').click());
+$('file').addEventListener('change', importScript);
+$('checkBtn').addEventListener('click', checkDraft);
+$('clearBtn').addEventListener('click', () => {
+  if (confirm('Clear the editor text?')) {
+    $('code').value = '';
+    saveDraft();
+    setStatus('Editor cleared.');
+  }
+});
+$('clearConsoleBtn').addEventListener('click', () => {
+  $('console').textContent = '[INFO] Console cleared.';
+});
+$('backupBtn').addEventListener('click', exportAll);
+$('deleteAllBtn').addEventListener('click', deleteAll);
+$('code').addEventListener('input', saveDraft);
+$('name').addEventListener('input', saveDraft);
+try {
+  const draft = JSON.parse(localStorage.getItem(DRAFT) || 'null');
+  if (draft) {
+    if (typeof draft.name === 'string') $('name').value = draft.name;
+    if (typeof draft.code === 'string') $('code').value = draft.code;
+    if (draft.id) currentId = draft.id;
+  }
+} catch (error) {
+  // Start with the default draft if saved draft data is invalid.
+}
+renderSaved();
 </script>
 </body>
 </html>
