@@ -1,0 +1,9 @@
+{
+  "name": "DeltaX Studio",
+  "short_name": "DeltaX",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#080914",
+  "theme_color": "#080914",
+  "description": "Mobile Lua script editor and organizer"
+}
