@@ -2,344 +2,1251 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#10091e">
-<title>DeltaX Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090611">
+<title>DeltaX Studio Ultimate</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/monokai.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js">
 <style>
-:root{color-scheme:dark;--bg:#10091e;--panel:#1b1430;--line:#49336d;--purple:#853fe8;--text:#f7f2ff;--muted:#bba8d5}
+:root {
+  --bg:#090611;
+  --panel:#130d20;
+  --panel2:#1c1230;
+  --accent:#a855f7;
+  --accent2:#e879f9;
+  --text:#f5f0ff;
+  --muted:#a69ab9;
+  --border:#352249;
+  --green:#4ade80;
+  --red:#fb7185;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
-header{padding:calc(18px + env(safe-area-inset-top)) 17px 18px;background:#1b1030;border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#bd8aff,#702ce0);font-size:24px;font-weight:900}
-h1{font-size:21px;margin:0;color:#d1aaff}
-header p{color:var(--muted);margin:5px 0 0;font-size:12px}
-main{padding:15px;max-width:850px;margin:auto;padding-bottom:45px}
-.intro{padding:12px 2px 18px}
-.intro h2{font-size:27px;margin:0 0 8px}
-.intro p{color:var(--muted);line-height:1.5;margin:0}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;margin-bottom:15px;min-width:0}
-h3{margin:0 0 14px;font-size:17px}
-label{display:block;font-size:12px;color:var(--muted);margin:12px 0 6px}
-input[type=text],textarea{width:100%;background:#0d0918;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:12px;font:14px inherit;outline:none}
-input[type=text]{font-size:14px}
-textarea{display:block;min-height:300px;resize:vertical;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2}
-input:focus,textarea:focus{border-color:#bd8aff}
-button,.upload{display:inline-block;background:var(--purple);color:white;border:0;border-radius:9px;padding:11px 13px;margin:5px 3px 3px 0;font-size:13px;font-weight:700;cursor:pointer}
-button.secondary,.upload.secondary{background:#302044;border:1px solid #63418b}
-button.danger{background:#512035;border:1px solid #853c60}
-button:active{opacity:.8}
-.actions{display:flex;flex-wrap:wrap;gap:5px}
-.actions button{flex:1}
-.note{font-size:12px;line-height:1.6;color:var(--muted)}
-#status{font-size:12px;color:#b9f5d7;overflow-wrap:anywhere}
-#saved{overflow-wrap:anywhere}
-.saved-row{padding:12px 0;border-bottom:1px solid var(--line)}
-.saved-row:last-child{border-bottom:0}
-.saved-title{font-weight:700;overflow-wrap:anywhere}
-.saved-actions{margin-top:5px}
-#console{background:#0b0813;border:1px solid var(--line);padding:12px;border-radius:9px;min-height:65px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 ui-monospace,monospace}
-footer{text-align:center;color:#75658b;font-size:11px;padding:8px 15px 24px}
-@media(min-width:600px){main{padding-top:25px}.intro h2{font-size:32px}textarea{min-height:390px}}
+body{
+  margin:0;
+  background:radial-gradient(ellipse at top,#291044,var(--bg) 60%);
+  color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  min-height:100vh;
+  transition:background .25s;
+}
+body[data-theme="blue"]{
+  --accent:#3b82f6;--accent2:#67e8f9;
+  --panel:#0c1426;--panel2:#12223c;--border:#243e65;
+  background:radial-gradient(ellipse at top,#102e55,var(--bg) 65%);
+}
+body[data-theme="red"]{
+  --accent:#f43f5e;--accent2:#fb923c;
+  --panel:#1b0b13;--panel2:#30121d;--border:#552535;
+  background:radial-gradient(ellipse at top,#4c1027,var(--bg) 65%);
+}
+body[data-theme="green"]{
+  --accent:#22c55e;--accent2:#86efac;
+  --panel:#0b1812;--panel2:#10291b;--border:#23543a;
+  background:radial-gradient(ellipse at top,#123b28,var(--bg) 65%);
+}
+body[data-theme="light"]{
+  --bg:#f2edf9;--panel:#fff;--panel2:#eee5fb;
+  --text:#251333;--muted:#756781;--border:#d7c5e9;
+  --accent:#9333ea;--accent2:#c026d3;
+  background:#f2edf9;
+}
+button,input,select,textarea{font:inherit}
+button{
+  cursor:pointer;border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;background:var(--panel2);color:var(--text);
+  transition:transform .15s,border-color .15s;
+}
+button:hover{border-color:var(--accent)}
+button:active{transform:scale(.98)}
+button.primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:0;color:white;font-weight:750;
+}
+button.danger{color:var(--red)}
+button.smallbtn{padding:6px 9px;font-size:12px}
+input,select{
+  background:var(--bg);border:1px solid var(--border);
+  color:var(--text);border-radius:9px;padding:10px;
+  width:100%;min-width:0;outline:none;
+}
+input:focus,select:focus{border-color:var(--accent)}
+header{
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:14px 20px;
+  background:var(--bg);border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:850}
+.logo{
+  width:40px;height:40px;border-radius:13px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  box-shadow:0 0 25px #a855f744;
+}
+.brand em{font-style:normal;color:var(--accent2)}
+.header-actions{display:flex;align-items:center;gap:7px}
+.pill{font-size:11px;color:var(--green);border:1px solid #24633f;border-radius:30px;padding:7px 10px}
+main{max-width:1450px;margin:auto;padding:24px 18px 45px}
+.hero{margin:5px 0 22px}
+.hero h1{font-size:clamp(27px,5vw,43px);letter-spacing:-1.5px;margin:0 0 8px}
+.hero h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));color:transparent;background-clip:text}
+.hero p{color:var(--muted);margin:0;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
+.stat{padding:15px;border:1px solid var(--border);border-radius:14px;background:var(--panel)}
+.stat .label{font-size:12px;color:var(--muted)}
+.stat .value{font-size:23px;font-weight:800;margin-top:5px;overflow-wrap:anywhere}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:16px}
+.panel{min-width:0;background:var(--panel);border:1px solid var(--border);border-radius:15px;overflow:hidden}
+.panel-title{padding:14px 15px;border-bottom:1px solid var(--border);font-weight:800;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.muted{color:var(--muted);font-size:12px;font-weight:400}
+.side-content{padding:12px}
+.label{display:block;font-size:12px;color:var(--muted);margin:13px 0 7px}
+.full{width:100%;margin-top:8px}
+.row{display:flex;gap:8px;align-items:center}
+.row>*{min-width:0}
+.wrap{flex-wrap:wrap}
+.script-list{display:grid;gap:7px;margin-top:12px}
+.script-card{
+  border:1px solid var(--border);border-radius:10px;
+  padding:9px;background:var(--bg);cursor:pointer;min-width:0;
+}
+.script-card.active{border-color:var(--accent);background:var(--panel2)}
+.script-card .script-name{font-weight:700;overflow-wrap:anywhere;font-size:13px}
+.script-card .script-meta{font-size:11px;color:var(--muted);margin-top:5px}
+.script-card .card-actions{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.script-card .card-actions button{font-size:11px;padding:5px 7px}
+.toolbar{padding:11px;display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.toolbar button{padding:9px 11px}
+.filename{margin:12px;width:calc(100% - 24px)}
+.CodeMirror{
+  height:430px;font-size:13px;line-height:1.65;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+.editor-foot{
+  display:flex;justify-content:space-between;gap:8px;
+  padding:10px 13px;font-size:12px;color:var(--muted);
+  border-top:1px solid var(--border);flex-wrap:wrap;
+}
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.console{padding:13px;min-height:130px;max-height:240px;overflow:auto;font:12px/1.8 ui-monospace,monospace;overflow-wrap:anywhere}
+.log{border-bottom:1px solid #ffffff0b;padding:3px 0;color:var(--muted)}
+.log.success{color:var(--green)}
+.log.error{color:var(--red)}
+.log.info{color:var(--accent2)}
+.check-content{padding:14px;color:var(--muted);font-size:13px;line-height:1.8;overflow-wrap:anywhere}
+.check-item{margin-top:5px}
+.check-good{color:var(--green)}
+.check-bad{color:var(--red)}
+.section-gap{margin-top:16px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px;line-height:1.8}
+.empty{color:var(--muted);font-size:12px;padding:12px 3px}
+hr{border:0;border-top:1px solid var(--border);margin:16px 0}
+kbd{border:1px solid var(--border);border-radius:5px;padding:2px 5px;font-size:11px}
+.notice{padding:10px;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:12px;line-height:1.6;margin-top:10px}
+.hidden{display:none!important}
+.CodeMirror-hints{z-index:9999}
+.CodeMirror-linenumber{color:var(--muted)}
+#toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:var(--panel2);border:1px solid var(--accent);
+  padding:12px 17px;border-radius:12px;z-index:100;
+  display:none;max-width:90vw;font-size:13px;text-align:center;
+}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bottom-grid{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+  header{padding:11px}
+  .brand{font-size:16px}
+  .logo{width:34px;height:34px}
+  .pill{display:none}
+  main{padding:18px 10px 35px}
+  .hero h1{font-size:30px}
+  .stats{gap:8px}
+  .stat{padding:11px}
+  .stat .value{font-size:20px}
+  .CodeMirror{height:350px;font-size:12px}
+  .toolbar button{flex:1}
+}
 </style>
 </head>
-<body>
+<body data-theme="purple">
 <header>
   <div class="brand">
-    <div class="logo">Δ</div>
-    <div>
-      <h1>DeltaX Studio</h1>
-      <p>Mobile Lua Script Workspace</p>
-    </div>
+    <div class="logo">ΔX</div>
+    <div>DeltaX <em>Studio</em></div>
+  </div>
+  <div class="header-actions">
+    <span class="pill">● LOCAL WORKSPACE</span>
+    <button id="themeQuick" title="Change theme">🎨</button>
+    <button id="settingsButton" title="Settings">⚙️</button>
   </div>
 </header>
 <main>
-  <section class="intro">
-    <h2>Your scripts. Your workspace.</h2>
-    <p>Write, save, import, and export Lua script drafts right from your phone.</p>
+  <section class="hero">
+    <h1>Your code. <span>Your workspace.</span></h1>
+    <p>A Lua workspace with script organization, editing tools, backups, themes, and code checks.</p>
   </section>
-  <section class="card">
-    <h3>Script Editor</h3>
-    <label for="name">Script name</label>
-    <input id="name" type="text" value="MyScript.lua" maxlength="100">
-<label for="code">Lua source code</label>
-<textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off">-- Welcome to DeltaX Studio
-
-– Write your Lua code here.
-
-print(“Hello, world!”)
-
-<div class="actions">
-  <button id="saveBtn">Save Script</button>
-  <button id="newBtn" class="secondary">New Script</button>
-  <button id="exportBtn" class="secondary">Export .lua</button>
-</div>
-<div class="actions">
-  <button id="importBtn" class="secondary">Import Script</button>
-  <button id="checkBtn" class="secondary">Check Draft</button>
-  <button id="clearBtn" class="danger">Clear Editor</button>
-</div>
-<input id="file" type="file" accept=".lua,.luau,.txt,text/plain" hidden>
-<p id="status">Ready. Your scripts are stored in this browser.</p>
-<p class="note">This is a Lua text editor and organizer. It does not inject scripts into Roblox or execute code inside the Roblox app.</p>
+  <section class="stats">
+    <div class="stat"><div class="label">SAVED SCRIPTS</div><div class="value" id="statScripts">0</div></div>
+    <div class="stat"><div class="label">LINES OF CODE</div><div class="value" id="statLines">0</div></div>
+    <div class="stat"><div class="label">CHARACTERS</div><div class="value" id="statChars">0</div></div>
+    <div class="stat"><div class="label">FAVORITES</div><div class="value" id="statFavorites">0</div></div>
   </section>
-  <section class="card">
-    <h3>My Saved Scripts</h3>
-    <div id="saved"></div>
-  </section>
-  <section class="card">
-    <h3>Script Checker Console</h3>
-    <div class="actions">
-      <button id="clearConsoleBtn" class="secondary">Clear Console</button>
-    </div>
-    <pre id="console">[INFO] DeltaX Studio ready.
-[INFO] Local editing enabled.</pre>
-  </section>
-  <section class="card">
-    <h3>Backup</h3>
-    <p class="note">Export your saved scripts as a backup file. Saved scripts stay in this browser, so clearing browser data may erase them.</p>
-    <div class="actions">
-      <button id="backupBtn">Export All Scripts</button>
-      <button id="deleteAllBtn" class="danger">Delete All Scripts</button>
-    </div>
-  </section>
+  <div class="layout">
+    <aside>
+      <section class="panel">
+        <div class="panel-title">
+          <span>📁 Script Library</span>
+          <span class="muted" id="scriptCount">0</span>
+        </div>
+        <div class="side-content">
+          <label class="label" for="newName">New script name</label>
+          <input id="newName" maxlength="70" placeholder="MyScript">
+          <label class="label" for="newFolder">Folder</label>
+          <input id="newFolder" maxlength="40" placeholder="General">
+          <button class="primary full" id="newButton">＋ New Script</button>
+          <button class="full" id="saveButton">💾 Save Current</button>
+          <label class="label" for="searchScripts">Search scripts</label>
+          <input id="searchScripts" placeholder="Search by name or folder">
+          <label class="label" for="folderFilter">Show folder</label>
+          <select id="folderFilter">
+            <option value="all">All folders</option>
+          </select>
+          <label class="label" for="sortFilter">Sort scripts</label>
+          <select id="sortFilter">
+            <option value="updated">Recently updated</option>
+            <option value="name">Name A–Z</option>
+            <option value="created">Oldest first</option>
+            <option value="favorites">Favorites first</option>
+          </select>
+          <label class="label">
+            <input type="checkbox" id="favoritesOnly" style="width:auto">
+            Show favorites only
+          </label>
+          <div class="script-list" id="scriptList"></div>
+          <hr>
+          <button class="full" id="importButton">📂 Import Lua / JSON</button>
+          <input type="file" id="fileInput" accept=".lua,.txt,.json,text/plain,application/json" hidden>
+          <button class="full" id="exportButton">⬇ Export Current .lua</button>
+          <button class="full" id="backupButton">📦 Export Full Backup</button>
+          <button class="full" id="restoreButton">♻️ Restore Backup</button>
+          <input type="file" id="backupInput" accept=".json,application/json" hidden>
+          <div class="notice">Your scripts are saved in this browser. Export backups regularly to avoid losing work.</div>
+        </div>
+      </section>
+      <section class="panel section-gap hidden" id="settingsPanel">
+        <div class="panel-title">⚙️ Settings</div>
+        <div class="side-content">
+          <label class="label" for="themeSelect">Color theme</label>
+          <select id="themeSelect">
+            <option value="purple">Purple Night</option>
+            <option value="blue">Ocean Blue</option>
+            <option value="red">Crimson</option>
+            <option value="green">Matrix Green</option>
+            <option value="light">Light Mode</option>
+          </select>
+          <label class="label" for="editorTheme">Code editor theme</label>
+          <select id="editorTheme">
+            <option value="dracula">Dracula</option>
+            <option value="material-darker">Material Darker</option>
+            <option value="monokai">Monokai</option>
+          </select>
+          <label class="label" for="fontSize">Editor font size</label>
+          <select id="fontSize">
+            <option value="12">12 px</option>
+            <option value="13" selected>13 px</option>
+            <option value="14">14 px</option>
+            <option value="16">16 px</option>
+            <option value="18">18 px</option>
+          </select>
+          <label class="label">
+            <input id="lineNumbers" type="checkbox" checked style="width:auto">
+            Show line numbers
+          </label>
+          <label class="label">
+            <input id="wordWrap" type="checkbox" checked style="width:auto">
+            Wrap long lines
+          </label>
+          <button class="full" id="clearHistoryButton">Clear Version History</button>
+          <button class="full danger" id="deleteAllButton">Delete All Saved Scripts</button>
+        </div>
+      </section>
+    </aside>
+    <section>
+      <section class="panel">
+        <div class="panel-title">
+          <span>⌨️ Lua Editor</span>
+          <span class="muted" id="saveStatus">Ready</span>
+        </div>
+        <div class="toolbar">
+          <button class="primary" id="downloadButton">⬇ Export</button>
+          <button id="checkButton">✓ Check Code</button>
+          <button id="findButton">🔎 Find</button>
+          <button id="replaceButton">↔ Replace</button>
+          <button id="undoButton">↶ Undo</button>
+          <button id="redoButton">↷ Redo</button>
+          <button id="historyButton">🕘 History</button>
+        </div>
+        <input class="filename" id="fileName" maxlength="70" value="MyScript" aria-label="Script name" placeholder="Script name">
+        <div style="padding:0 12px 10px">
+          <div class="row">
+            <div style="flex:1">
+              <label class="label" for="folderName">Current folder</label>
+              <input id="folderName" maxlength="40" value="General">
+            </div>
+            <div>
+              <label class="label">&nbsp;</label>
+              <button id="favoriteButton">☆ Favorite</button>
+            </div>
+          </div>
+        </div>
+        <textarea id="code">-- Welcome to DeltaX Studio!
+-- Write your Lua code here.
+local message = "Hello, world!"
+print(message)
+</textarea>
+        <div class="editor-foot">
+          <span id="lineCount">Lines: 5</span>
+          <span id="charCount">Characters: 0</span>
+          <span id="cursorPosition">Line 1, Col 1</span>
+        </div>
+      </section>
+      <section class="panel section-gap hidden" id="historyPanel">
+        <div class="panel-title">
+          <span>🕘 Version History</span>
+          <button class="smallbtn" id="closeHistory">Close</button>
+        </div>
+        <div class="side-content">
+          <div class="muted">Restore an earlier saved version of this script.</div>
+          <div id="historyList" class="script-list"></div>
+        </div>
+      </section>
+      <div class="bottom-grid">
+        <section class="panel">
+          <div class="panel-title">
+            <span>🖥️ Console</span>
+            <button class="smallbtn" id="clearConsoleButton">Clear</button>
+          </div>
+          <div class="console" id="console" aria-live="polite"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-title">
+            <span>🔍 Code Checker</span>
+            <span class="muted">Basic checks</span>
+          </div>
+          <div class="check-content" id="checkResults">
+            Press <b>Check Code</b> to look for possible syntax problems.
+          </div>
+        </section>
+      </div>
+      <section class="panel section-gap">
+        <div class="panel-title">⚡ Lua Quick Reference</div>
+        <div class="side-content">
+          <div class="row wrap">
+            <button class="smallbtn insertExample" data-example="print('Hello, world!')">Print</button>
+            <button class="smallbtn insertExample" data-example="local count = 0">Variable</button>
+            <button class="smallbtn insertExample" data-example="if true then\n  print('It works!')\nend">If statement</button>
+            <button class="smallbtn insertExample" data-example="for i = 1, 10 do\n  print(i)\nend">For loop</button>
+            <button class="smallbtn insertExample" data-example="local function greet(name)\n  print('Hello, ' .. name)\nend">Function</button>
+            <button class="smallbtn insertExample" data-example="local items = {'one', 'two', 'three'}">Table</button>
+          </div>
+          <div class="notice">
+            Quick Reference inserts example Lua text into your editor.
+            It does not execute the code.
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+  <footer>
+    <b>DeltaX Studio Ultimate</b><br>
+    Lua editing workspace · Mobile friendly · Local storage<br>
+    No Roblox injection or game execution is performed by this website.
+  </footer>
 </main>
-<footer>DeltaX Studio · Mobile-friendly · No key system</footer>
+<div id="toast" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/lua/lua.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/search/searchcursor.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/dialog/dialog.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/search/search.min.js"></script>
 <script>
-'use strict';
-const $ = id => document.getElementById(id);
-const STORAGE_KEY = 'deltax_studio_scripts_v1';
-const DRAFT_KEY = 'deltax_studio_draft_v1';
-let scripts = [];
-let currentId = null;
-try {
-  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  scripts = Array.isArray(stored) ? stored : [];
-} catch (error) {
-  scripts = [];
-}
-function setStatus(message) {
-  $('status').textContent = message;
-}
-function log(message) {
-  const output = $('console');
-  output.textContent += '\n' + message;
-  output.scrollTop = output.scrollHeight;
-}
-function persist() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(scripts));
-    renderSaved();
-  } catch (error) {
-    setStatus('Could not save. Your browser storage may be full.');
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const STORAGE_KEY = "deltax_studio_ultimate_v1";
+  const SETTINGS_KEY = "deltax_studio_settings_v1";
+  let scripts = {};
+  let activeId = null;
+  let editor = null;
+  let autoSaveTimer = null;
+  let toastTimer = null;
+  const luaWords = [
+    "and","break","do","else","elseif","end","false","for","function",
+    "if","in","local","nil","not","or","repeat","return","then",
+    "true","until","while","print","pairs","ipairs","next","type",
+    "tostring","tonumber","select","assert","error","pcall","xpcall",
+    "require","math","string","table","coroutine","collectgarbage"
+  ];
+  function notify(message) {
+    const toast = $("toast");
+    toast.textContent = message;
+    toast.style.display = "block";
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.style.display = "none", 2500);
   }
-}
-function saveDraft() {
-  try {
-    localStorage.setItem(DRAFT_KEY, JSON.stringify({
-      name: $('name').value,
-      code: $('code').value,
-      id: currentId
-    }));
-  } catch (error) {
-    // Editing can continue if local storage is unavailable.
+  function log(message, type = "info") {
+    const row = document.createElement("div");
+    row.className = "log " + type;
+    row.textContent = "[" + new Date().toLocaleTimeString() + "] " + message;
+    $("console").appendChild(row);
+    $("console").scrollTop = $("console").scrollHeight;
   }
-}
-function saveScript() {
-  let name = $('name').value.trim() || 'MyScript.lua';
-  if (!/\.lua(u)?$/i.test(name)) name += '.lua';
-  const code = $('code').value;
-  let existing = scripts.find(item => item.id === currentId);
-  if (existing) {
-    existing.name = name;
-    existing.code = code;
-    existing.updated = Date.now();
-  } else {
-    const item = {
-      id: Date.now().toString() + Math.random().toString(16).slice(2),
-      name: name,
-      code: code,
-      updated: Date.now()
+  function safeName(value) {
+    return (value || "MyScript")
+      .replace(/\.lua$/i, "")
+      .replace(/[<>:"/\\|?*\x00-\x1F]/g, "_")
+      .trim()
+      .slice(0, 70) || "MyScript";
+  }
+  function safeFolder(value) {
+    return (value || "General").trim().slice(0, 40) || "General";
+  }
+  function newId() {
+    return "script_" + Date.now() + "_" +
+      Math.random().toString(36).slice(2, 9);
+  }
+  function currentCode() {
+    return editor ? editor.getValue() : $("code").value;
+  }
+  function setCode(value) {
+    if (editor) editor.setValue(value);
+    else $("code").value = value;
+    updateStats();
+  }
+  function settingsDefaults() {
+    return {
+      theme: "purple",
+      editorTheme: "dracula",
+      fontSize: "13",
+      lineNumbers: true,
+      wordWrap: true
     };
-    scripts.unshift(item);
-    currentId = item.id;
   }
-  persist();
-  saveDraft();
-  setStatus('Saved ' + name);
-  log('[SAVED] ' + name);
-}
-function newScript() {
-  currentId = null;
-  $('name').value = 'MyScript.lua';
-  $('code').value = '-- New Lua script\n\n';
-  saveDraft();
-  setStatus('New draft created.');
-  window.scrollTo({top: 0, behavior: 'smooth'});
-  $('code').focus();
-}
-function safeFilename(name) {
-  return name.replace(/[^\w.-]+/g, '_');
-}
-function downloadFile(filename, content, type) {
-  const blob = new Blob([content], {type: type || 'text/plain;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = safeFilename(filename);
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1500);
-}
-function exportScript() {
-  let name = $('name').value.trim() || 'MyScript.lua';
-  if (!/\.lua(u)?$/i.test(name)) name += '.lua';
-  downloadFile(name, $('code').value);
-  setStatus('Exported ' + name);
-  log('[EXPORT] ' + name);
-}
-function importScript(event) {
-  const file = event.target.files && event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    currentId = null;
-    $('name').value = file.name;
-    $('code').value = String(reader.result || '');
-    saveDraft();
-    setStatus('Imported ' + file.name);
-    log('[IMPORT] ' + file.name);
-  };
-  reader.onerror = () => setStatus('Could not read that file.');
-  reader.readAsText(file);
-  event.target.value = '';
-}
-function openScript(id) {
-  const item = scripts.find(script => script.id === id);
-  if (!item) return;
-  currentId = item.id;
-  $('name').value = item.name;
-  $('code').value = item.code;
-  saveDraft();
-  setStatus('Opened ' + item.name);
-  window.scrollTo({top: 0, behavior: 'smooth'});
-}
-function deleteScript(id) {
-  const item = scripts.find(script => script.id === id);
-  if (!item || !confirm('Delete ' + item.name + '?')) return;
-  scripts = scripts.filter(script => script.id !== id);
-  if (currentId === id) currentId = null;
-  persist();
-  setStatus('Script deleted.');
-  log('[DELETE] ' + item.name);
-}
-function renderSaved() {
-  const container = $('saved');
-  container.replaceChildren();
-  if (!scripts.length) {
-    const empty = document.createElement('p');
-    empty.className = 'note';
-    empty.textContent = 'No saved scripts yet. Save a draft to see it here.';
-    container.appendChild(empty);
-    return;
+  let settings = settingsDefaults();
+  function loadSettings() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
+      if (saved && typeof saved === "object") {
+        settings = {...settingsDefaults(), ...saved};
+      }
+    } catch (_) {
+      settings = settingsDefaults();
+    }
+    $("themeSelect").value = settings.theme;
+    $("editorTheme").value = settings.editorTheme;
+    $("fontSize").value = settings.fontSize;
+    $("lineNumbers").checked = settings.lineNumbers;
+    $("wordWrap").checked = settings.wordWrap;
+    document.body.dataset.theme = settings.theme;
   }
-  scripts.forEach(item => {
-    const row = document.createElement('div');
-    row.className = 'saved-row';
-    const title = document.createElement('div');
-    title.className = 'saved-title';
-    title.textContent = item.name;
-    const info = document.createElement('p');
-    info.className = 'note';
-    info.textContent = String(item.code.length) + ' characters';
-    const actions = document.createElement('div');
-    actions.className = 'saved-actions';
-    const open = document.createElement('button');
-    open.textContent = 'Open';
-    open.onclick = () => openScript(item.id);
-    const exportButton = document.createElement('button');
-    exportButton.className = 'secondary';
-    exportButton.textContent = 'Export';
-    exportButton.onclick = () => {
-      let filename = item.name;
-      if (!/\.lua(u)?$/i.test(filename)) filename += '.lua';
-      downloadFile(filename, item.code);
+  function saveSettings() {
+    settings.theme = $("themeSelect").value;
+    settings.editorTheme = $("editorTheme").value;
+    settings.fontSize = $("fontSize").value;
+    settings.lineNumbers = $("lineNumbers").checked;
+    settings.wordWrap = $("wordWrap").checked;
+    document.body.dataset.theme = settings.theme;
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    } catch (_) {
+      log("Could not save preferences.", "error");
+    }
+    applyEditorSettings();
+  }
+  function applyEditorSettings() {
+    if (!editor) return;
+    editor.setOption("theme", settings.editorTheme);
+    editor.setOption("lineNumbers", settings.lineNumbers);
+    editor.setOption("lineWrapping", settings.wordWrap);
+    editor.getWrapperElement().style.fontSize = settings.fontSize + "px";
+    editor.refresh();
+  }
+  function loadScripts() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      if (data && data.scripts && typeof data.scripts === "object") {
+        scripts = data.scripts;
+      } else if (data && typeof data === "object" && !Array.isArray(data)) {
+        scripts = data;
+      }
+    } catch (error) {
+      log("Saved data could not be loaded: " + error.message, "error");
+      scripts = {};
+    }
+  }
+  function persist() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({scripts}));
+      $("saveStatus").textContent = "Saved locally";
+      return true;
+    } catch (error) {
+      $("saveStatus").textContent = "Save failed";
+      log("Storage is full or unavailable. Export a backup.", "error");
+      return false;
+    }
+  }
+  function snapshot(item) {
+    if (!item.history) item.history = [];
+    const last = item.history[item.history.length - 1];
+    if (last && last.code === item.code) return;
+    item.history.push({
+      code: item.code,
+      name: item.name,
+      folder: item.folder || "General",
+      time: Date.now()
+    });
+    if (item.history.length > 30) item.history.shift();
+  }
+  function saveCurrent(silent = false) {
+    const name = safeName($("fileName").value);
+    const folder = safeFolder($("folderName").value);
+    $("fileName").value = name;
+    $("folderName").value = folder;
+    if (!activeId) activeId = newId();
+    let item = scripts[activeId];
+    if (!item) {
+      item = {
+        name,
+        folder,
+        code: currentCode(),
+        created: Date.now(),
+        updated: Date.now(),
+        favorite: false,
+        history: []
+      };
+      scripts[activeId] = item;
+    } else {
+      if (item.code !== currentCode() ||
+          item.name !== name ||
+          item.folder !== folder) {
+        snapshot(item);
+      }
+      item.name = name;
+      item.folder = folder;
+      item.code = currentCode();
+      item.updated = Date.now();
+    }
+    const success = persist();
+    renderScripts();
+    updateStats();
+    if (success && !silent) {
+      log("Saved " + name + ".", "success");
+      notify("Script saved!");
+    }
+    return success;
+  }
+  function openScript(id) {
+    const item = scripts[id];
+    if (!item) return;
+    activeId = id;
+    $("fileName").value = item.name || "MyScript";
+    $("folderName").value = item.folder || "General";
+    setCode(item.code || "");
+    updateFavoriteButton();
+    renderScripts();
+    renderHistory();
+    $("saveStatus").textContent = "Loaded";
+    log("Opened " + item.name + ".", "success");
+  }
+  function createScript() {
+    saveCurrent(true);
+    activeId = newId();
+    const name = safeName($("newName").value || "MyScript");
+    const folder = safeFolder($("newFolder").value || "General");
+    $("fileName").value = name;
+    $("folderName").value = folder;
+    $("newName").value = "";
+    setCode("-- " + name + "\n-- Write your Lua code here.\n\n");
+    scripts[activeId] = {
+      name,
+      folder,
+      code: currentCode(),
+      created: Date.now(),
+      updated: Date.now(),
+      favorite: false,
+      history: []
     };
-    const remove = document.createElement('button');
-    remove.className = 'danger';
-    remove.textContent = 'Delete';
-    remove.onclick = () => deleteScript(item.id);
-    actions.append(open, exportButton, remove);
-    row.append(title, info, actions);
-    container.appendChild(row);
+    persist();
+    renderScripts();
+    updateStats();
+    updateFavoriteButton();
+    $("saveStatus").textContent = "New script";
+    log("Created " + name + ".", "success");
+  }
+  function updateFavoriteButton() {
+    const item = scripts[activeId];
+    $("favoriteButton").textContent =
+      item && item.favorite ? "★ Favorited" : "☆ Favorite";
+  }
+  function toggleFavorite(id = activeId) {
+    const item = scripts[id];
+    if (!item) return;
+    item.favorite = !item.favorite;
+    persist();
+    renderScripts();
+    updateFavoriteButton();
+    updateStats();
+    notify(item.favorite ? "Added to favorites" : "Removed from favorites");
+  }
+  function updateFolderOptions() {
+    const select = $("folderFilter");
+    const current = select.value;
+    const folders = [...new Set(
+      Object.values(scripts).map(item => safeFolder(item.folder))
+    )].sort((a,b) => a.localeCompare(b));
+    select.replaceChildren();
+    const all = document.createElement("option");
+    all.value = "all";
+    all.textContent = "All folders";
+    select.appendChild(all);
+    folders.forEach(folder => {
+      const option = document.createElement("option");
+      option.value = folder;
+      option.textContent = folder;
+      select.appendChild(option);
+    });
+    select.value = folders.includes(current) || current === "all"
+      ? current : "all";
+  }
+  function renderScripts() {
+    const list = $("scriptList");
+    const query = $("searchScripts").value.trim().toLowerCase();
+    const folder = $("folderFilter").value;
+    const favoritesOnly = $("favoritesOnly").checked;
+    let entries = Object.entries(scripts).filter(([id, item]) => {
+      const name = String(item.name || "").toLowerCase();
+      const category = String(item.folder || "General").toLowerCase();
+      const matchesSearch = name.includes(query) || category.includes(query);
+      const matchesFolder = folder === "all" || category === folder.toLowerCase();
+      const matchesFavorite = !favoritesOnly || item.favorite;
+      return matchesSearch && matchesFolder && matchesFavorite;
+    });
+    const sort = $("sortFilter").value;
+    if (sort === "name") {
+      entries.sort((a,b) => a[1].name.localeCompare(b[1].name));
+    } else if (sort === "created") {
+      entries.sort((a,b) => (a[1].created || 0) - (b[1].created || 0));
+    } else if (sort === "favorites") {
+      entries.sort((a,b) =>
+        Number(Boolean(b[1].favorite)) - Number(Boolean(a[1].favorite)) ||
+        (b[1].updated || 0) - (a[1].updated || 0)
+      );
+    } else {
+      entries.sort((a,b) => (b[1].updated || 0) - (a[1].updated || 0));
+    }
+    list.replaceChildren();
+    $("scriptCount").textContent = entries.length;
+    if (!entries.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "No scripts found.";
+      list.appendChild(empty);
+    }
+    entries.forEach(([id,item]) => {
+      const card = document.createElement("div");
+      card.className = "script-card" + (id === activeId ? " active" : "");
+      const name = document.createElement("div");
+      name.className = "script-name";
+      name.textContent = (item.favorite ? "★ " : "") + item.name;
+      const meta = document.createElement("div");
+      meta.className = "script-meta";
+      meta.textContent = (item.folder || "General") + " · " +
+        (item.code || "").split("\n").length + " lines";
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
+      const open = document.createElement("button");
+      open.textContent = "Open";
+      open.addEventListener("click", () => openScript(id));
+      const fav = document.createElement("button");
+      fav.textContent = item.favorite ? "★" : "☆";
+      fav.title = "Toggle favorite";
+      fav.addEventListener("click", event => {
+        event.stopPropagation();
+        toggleFavorite(id);
+      });
+      const rename = document.createElement("button");
+      rename.textContent = "Rename";
+      rename.addEventListener("click", event => {
+        event.stopPropagation();
+        const value = prompt("New script name:", item.name);
+        if (value === null) return;
+        item.name = safeName(value);
+        item.updated = Date.now();
+        persist();
+        if (activeId === id) $("fileName").value = item.name;
+        renderScripts();
+        log("Renamed script.", "success");
+      });
+      const del = document.createElement("button");
+      del.textContent = "Delete";
+      del.className = "danger";
+      del.addEventListener("click", event => {
+        event.stopPropagation();
+        if (!confirm("Delete '" + item.name + "'? This cannot be undone.")) return;
+        delete scripts[id];
+        if (activeId === id) {
+          activeId = null;
+          const next = Object.keys(scripts)[0];
+          if (next) openScript(next);
+          else createBlankWithoutSaving();
+        }
+        persist();
+        renderScripts();
+        updateStats();
+        log("Deleted " + item.name + ".");
+      });
+      actions.append(open, fav, rename, del);
+      card.append(name, meta, actions);
+      card.addEventListener("dblclick", () => openScript(id));
+      list.appendChild(card);
+    });
+    updateFolderOptions();
+  }
+  function createBlankWithoutSaving() {
+    activeId = newId();
+    $("fileName").value = "MyScript";
+    $("folderName").value = "General";
+    setCode("-- New Lua script\n\n");
+    scripts[activeId] = {
+      name:"MyScript",
+      folder:"General",
+      code:currentCode(),
+      created:Date.now(),
+      updated:Date.now(),
+      favorite:false,
+      history:[]
+    };
+    persist();
+    updateFavoriteButton();
+    renderScripts();
+    updateStats();
+  }
+  function updateStats() {
+    const text = currentCode();
+    const lines = text.length ? text.split("\n").length : 0;
+    $("lineCount").textContent = "Lines: " + lines;
+    $("charCount").textContent = "Characters: " + text.length;
+    $("statLines").textContent = Object.values(scripts).reduce(
+      (sum,item) => sum + String(item.code || "").split("\n").length, 0
+    );
+    $("statChars").textContent = Object.values(scripts).reduce(
+      (sum,item) => sum + String(item.code || "").length, 0
+    );
+    $("statScripts").textContent = Object.keys(scripts).length;
+    $("statFavorites").textContent =
+      Object.values(scripts).filter(item => item.favorite).length;
+  }
+  function downloadFile(name, content, type = "text/plain;charset=utf-8") {
+    const blob = new Blob([content], {type});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = name;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  }
+  function exportCurrent() {
+    saveCurrent(true);
+    const name = safeName($("fileName").value);
+    downloadFile(name + ".lua", currentCode());
+    log("Exported " + name + ".lua.", "success");
+    notify("Lua file exported");
+  }
+  function exportBackup() {
+    saveCurrent(true);
+    const backup = {
+      app:"DeltaX Studio Ultimate",
+      version:1,
+      exportedAt:new Date().toISOString(),
+      scripts
+    };
+    downloadFile(
+      "DeltaX-Backup-" + new Date().toISOString().slice(0,10) + ".json",
+      JSON.stringify(backup, null, 2),
+      "application/json;charset=utf-8"
+    );
+    log("Backup exported.", "success");
+    notify("Backup downloaded");
+  }
+  function importFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const content = String(reader.result || "");
+        if (/\.json$/i.test(file.name)) {
+          const data = JSON.parse(content);
+          const incoming = data.scripts || data;
+          if (!incoming || typeof incoming !== "object" ||
+              Array.isArray(incoming)) {
+            throw new Error("Unsupported backup format.");
+          }
+          let count = 0;
+          Object.values(incoming).forEach(item => {
+            if (item && typeof item.code === "string") {
+              const id = newId();
+              scripts[id] = {
+                name:safeName(item.name || "ImportedScript"),
+                folder:safeFolder(item.folder),
+                code:item.code,
+                created:Date.now(),
+                updated:Date.now(),
+                favorite:Boolean(item.favorite),
+                history:Array.isArray(item.history) ? item.history : []
+              };
+              count++;
+            }
+          });
+          if (!count) throw new Error("No usable scripts were found.");
+          persist();
+          renderScripts();
+          updateStats();
+          log("Imported " + count + " scripts.", "success");
+          notify("Scripts imported");
+        } else {
+          saveCurrent(true);
+          activeId = newId();
+          $("fileName").value = safeName(file.name);
+          $("folderName").value = "Imported";
+          setCode(content);
+          scripts[activeId] = {
+            name:safeName(file.name),
+            folder:"Imported",
+            code:content,
+            created:Date.now(),
+            updated:Date.now(),
+            favorite:false,
+            history:[]
+          };
+          persist();
+          renderScripts();
+          updateStats();
+          updateFavoriteButton();
+          log("Imported " + file.name + ".", "success");
+          notify("Lua file imported");
+        }
+      } catch (error) {
+        log("Import failed: " + error.message, "error");
+        notify("Import failed");
+      } finally {
+        $("fileInput").value = "";
+        $("backupInput").value = "";
+      }
+    };
+    reader.onerror = () => log("Could not read that file.", "error");
+    reader.readAsText(file);
+  }
+  function restoreBackup(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(String(reader.result || ""));
+        const incoming = data.scripts || data;
+        if (!incoming || typeof incoming !== "object" || Array.isArray(incoming)) {
+          throw new Error("This is not a valid script backup.");
+        }
+        const restored = {};
+        let count = 0;
+        Object.values(incoming).forEach(item => {
+          if (item && typeof item.code === "string") {
+            restored[newId()] = {
+              name:safeName(item.name),
+              folder:safeFolder(item.folder),
+              code:item.code,
+              created:item.created || Date.now(),
+              updated:item.updated || Date.now(),
+              favorite:Boolean(item.favorite),
+              history:Array.isArray(item.history) ? item.history : []
+            };
+            count++;
+          }
+        });
+        if (!count) throw new Error("No scripts found in this backup.");
+        if (!confirm("Restore " + count + " scripts? Existing scripts will be replaced.")) {
+          return;
+        }
+        scripts = restored;
+        activeId = null;
+        const first = Object.keys(scripts)[0];
+        if (first) openScript(first);
+        persist();
+        renderScripts();
+        updateStats();
+        log("Backup restored.", "success");
+        notify("Backup restored");
+      } catch (error) {
+        log("Restore failed: " + error.message, "error");
+      } finally {
+        $("backupInput").value = "";
+      }
+    };
+    reader.onerror = () => log("Could not read the backup.", "error");
+    reader.readAsText(file);
+  }
+  function checkCode() {
+    const code = currentCode();
+    const issues = [];
+    const brackets = [];
+    const matching = {")":"(","]":"[","}":"{"};
+    let quote = null;
+    let escaped = false;
+    let lineComment = false;
+    let longComment = false;
+    let longString = false;
+    for (let i = 0; i < code.length; i++) {
+      const ch = code[i];
+      const next = code[i + 1];
+      const ahead = code.slice(i, i + 4);
+      if (lineComment) {
+        if (ch === "\n") lineComment = false;
+        continue;
+      }
+      if (longComment) {
+        if (code.slice(i, i + 4) === "]===]") {
+          longComment = false;
+          i += 4;
+        } else if (code.slice(i, i + 3) === "]=]") {
+          longComment = false;
+          i += 2;
+        }
+        continue;
+      }
+      if (longString) {
+        if (code.slice(i, i + 3) === "]==]") {
+          longString = false;
+          i += 2;
+        } else if (code.slice(i, i + 2) === "]]") {
+          longString = false;
+          i++;
+        }
+        continue;
+      }
+      if (quote) {
+        if (escaped) {
+          escaped = false;
+          continue;
+        }
+        if (ch === "\\") {
+          escaped = true;
+          continue;
+        }
+        if (ch === quote) quote = null;
+        continue;
+      }
+      if (ahead.startsWith("--[[")) {
+        longComment = true;
+        i += 3;
+        continue;
+      }
+      if (ch === "-" && next === "-") {
+        lineComment = true;
+        i++;
+        continue;
+      }
+      if (ahead.startsWith("[[")) {
+        longString = true;
+        i++;
+        continue;
+      }
+      if (ch === "'" || ch === '"') {
+        quote = ch;
+        continue;
+      }
+      if ("([{".includes(ch)) {
+        brackets.push({ch,index:i});
+      } else if (")]}".includes(ch)) {
+        const last = brackets.pop();
+        if (!last || last.ch !== matching[ch]) {
+          issues.push("Unexpected closing bracket '" + ch + "' near character " + i + ".");
+        }
+      }
+    }
+    if (quote) issues.push("A quoted string may not be closed.");
+    if (longString) issues.push("A long string may not be closed.");
+    if (longComment) issues.push("A long comment may not be closed.");
+    if (brackets.length) issues.push("One or more opening brackets are not closed.");
+    if (!code.trim()) issues.push("The script is empty.");
+    const result = $("checkResults");
+    result.replaceChildren();
+    if (issues.length) {
+      const heading = document.createElement("div");
+      heading.className = "check-bad";
+      heading.textContent = "Possible issues: " + issues.length;
+      result.appendChild(heading);
+      issues.forEach(issue => {
+        const row = document.createElement("div");
+        row.className = "check-item";
+        row.textContent = "• " + issue;
+        result.appendChild(row);
+      });
+      log("Code check found possible issues.", "error");
+    } else {
+      const heading = document.createElement("div");
+      heading.className = "check-good";
+      heading.textContent = "✓ Basic checks passed";
+      result.appendChild(heading);
+      const note = document.createElement("div");
+      note.textContent =
+        "No obvious bracket, quote, or empty-file issues were found. This is not a full Lua compiler.";
+      result.appendChild(note);
+      log("Basic code checks passed.", "success");
+    }
+  }
+  function renderHistory() {
+    const list = $("historyList");
+    list.replaceChildren();
+    const item = scripts[activeId];
+    if (!item || !Array.isArray(item.history) || !item.history.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "No saved versions yet. Save edits to build history.";
+      list.appendChild(empty);
+      return;
+    }
+    [...item.history].reverse().forEach((version,index) => {
+      const card = document.createElement("div");
+      card.className = "script-card";
+      const title = document.createElement("div");
+      title.className = "script-name";
+      title.textContent = "Version " + (item.history.length - index);
+      const meta = document.createElement("div");
+      meta.className = "script-meta";
+      meta.textContent = new Date(version.time).toLocaleString();
+      const restore = document.createElement("button");
+      restore.textContent = "Restore this version";
+      restore.className = "full";
+      restore.addEventListener("click", () => {
+        if (!confirm("Restore this older version? Save the current version first.")) return;
+        snapshot(item);
+        item.code = version.code;
+        item.name = version.name || item.name;
+        item.folder = version.folder || item.folder;
+        $("fileName").value = item.name;
+        $("folderName").value = item.folder;
+        setCode(item.code);
+        persist();
+        renderHistory();
+        renderScripts();
+        log("Restored an older version.", "success");
+      });
+      card.append(title,meta,restore);
+      list.appendChild(card);
+    });
+  }
+  function insertText(text) {
+    if (!editor) return;
+    const selection = editor.getSelection();
+    editor.replaceSelection(text);
+    editor.focus();
+  }
+  $("newButton").addEventListener("click", createScript);
+  $("saveButton").addEventListener("click", () => saveCurrent());
+  $("downloadButton").addEventListener("click", exportCurrent);
+  $("exportButton").addEventListener("click", exportCurrent);
+  $("backupButton").addEventListener("click", exportBackup);
+  $("importButton").addEventListener("click", () => $("fileInput").click());
+  $("restoreButton").addEventListener("click", () => $("backupInput").click());
+  $("fileInput").addEventListener("change", event => importFile(event.target.files[0]));
+  $("backupInput").addEventListener("change", event => restoreBackup(event.target.files[0]));
+  $("checkButton").addEventListener("click", checkCode);
+  $("favoriteButton").addEventListener("click", () => toggleFavorite());
+  $("searchScripts").addEventListener("input", renderScripts);
+  $("folderFilter").addEventListener("change", renderScripts);
+  $("sortFilter").addEventListener("change", renderScripts);
+  $("favoritesOnly").addEventListener("change", renderScripts);
+  $("clearConsoleButton").addEventListener("click", () => {
+    $("console").replaceChildren();
+    log("Console cleared.");
   });
-}
-function checkDraft() {
-  const code = $('code').value;
-  const issues = [];
-  if (!code.trim()) issues.push('The draft is empty.');
-  const pairs = [['(', ')'], ['{', '}'], ['[', ']']];
-  pairs.forEach(pair => {
-    const openCount = code.split(pair[0]).length - 1;
-    const closeCount = code.split(pair[1]).length - 1;
-    if (openCount !== closeCount) {
-      issues.push('Check matching ' + pair[0] + ' and ' + pair[1] + ' characters.');
+  $("findButton").addEventListener("click", () => {
+    if (editor) {
+      editor.execCommand("find");
+    } else {
+      const term = prompt("Find text:");
+      if (term) notify("Use your browser's find feature or open the editor.");
     }
   });
-  if (!issues.length) {
-    issues.push('Basic text checks passed.');
+  $("replaceButton").addEventListener("click", () => {
+    if (editor) {
+      editor.execCommand("replace");
+    } else {
+      const find = prompt("Text to find:");
+      if (find === null || find === "") return;
+      const replacement = prompt("Replace with:", "");
+      if (replacement === null) return;
+      setCode(currentCode().split(find).join(replacement));
+    }
+  });
+  $("undoButton").addEventListener("click", () => {
+    if (editor) editor.undo();
+  });
+  $("redoButton").addEventListener("click", () => {
+    if (editor) editor.redo();
+  });
+  $("historyButton").addEventListener("click", () => {
+    $("historyPanel").classList.toggle("hidden");
+    renderHistory();
+  });
+  $("closeHistory").addEventListener("click", () => {
+    $("historyPanel").classList.add("hidden");
+  });
+  $("settingsButton").addEventListener("click", () => {
+    $("settingsPanel").classList.toggle("hidden");
+  });
+  $("themeQuick").addEventListener("click", () => {
+    const themes = ["purple","blue","red","green","light"];
+    const current = $("themeSelect").value;
+    const next = themes[(themes.indexOf(current) + 1) % themes.length];
+    $("themeSelect").value = next;
+    saveSettings();
+    notify("Theme: " + next);
+  });
+  ["themeSelect","editorTheme","fontSize","lineNumbers","wordWrap"].forEach(id => {
+    $(id).addEventListener("change", saveSettings);
+  });
+  $("clearHistoryButton").addEventListener("click", () => {
+    if (!confirm("Clear version history for every script?")) return;
+    Object.values(scripts).forEach(item => item.history = []);
+    persist();
+    renderHistory();
+    notify("Version history cleared");
+  });
+  $("deleteAllButton").addEventListener("click", () => {
+    if (!confirm("Delete every saved script? Export a backup first if needed.")) return;
+    scripts = {};
+    activeId = null;
+    createBlankWithoutSaving();
+    persist();
+    renderScripts();
+    updateStats();
+    log("All saved scripts were deleted.", "error");
+  });
+  document.querySelectorAll(".insertExample").forEach(button => {
+    button.addEventListener("click", () => {
+      insertText(button.dataset.example || "");
+      log("Inserted example: " + button.textContent + ".");
+    });
+  });
+  $("fileName").addEventListener("input", () => {
+    $("saveStatus").textContent = "Unsaved changes";
+  });
+  $("folderName").addEventListener("input", () => {
+    $("saveStatus").textContent = "Unsaved changes";
+  });
+  loadSettings();
+  loadScripts();
+  if (typeof CodeMirror !== "undefined") {
+    editor = CodeMirror.fromTextArea($("code"), {
+      mode:"lua",
+      theme:settings.editorTheme,
+      lineNumbers:settings.lineNumbers,
+      lineWrapping:settings.wordWrap,
+      matchBrackets:true,
+      indentUnit:2,
+      tabSize:2,
+      autofocus:false,
+      extraKeys:{
+        "Ctrl-S":() => saveCurrent(),
+        "Cmd-S":() => saveCurrent(),
+        "Ctrl-Z":"undo",
+        "Cmd-Z":"undo",
+        "Ctrl-Y":"redo",
+        "Cmd-Y":"redo",
+        "Ctrl-F":"find",
+        "Cmd-F":"find",
+        "Ctrl-H":"replace",
+        "Cmd-Alt-F":"replace",
+        "Tab":cm => cm.execCommand("insertSoftTab")
+      }
+    });
+    editor.getWrapperElement().style.fontSize = settings.fontSize + "px";
+    editor.on("change", () => {
+      updateStats();
+      $("saveStatus").textContent = "Unsaved changes";
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(() => {
+        if (activeId && scripts[activeId]) saveCurrent(true);
+      }, 1200);
+    });
+    editor.on("cursorActivity", () => {
+      const pos = editor.getCursor();
+      $("cursorPosition").textContent =
+        "Line " + (pos.line + 1) + ", Col " + (pos.ch + 1);
+    });
+    editor.on("inputRead", (cm, change) => {
+      const cursor = cm.getCursor();
+      if (cursor.ch === 0) return;
+      const line = cm.getLine(cursor.line);
+      const word = line.slice(0,cursor.ch).match(/[A-Za-z_][A-Za-z0-9_]*$/);
+      if (word && word[0].length >= 2) {
+        CodeMirror.showHint(cm, () => {
+          const start = cm.getCursor();
+          const currentLine = cm.getLine(start.line);
+          const match = currentLine.slice(0,start.ch).match(/[A-Za-z_][A-Za-z0-9_]*$/);
+          const prefix = match ? match[0] : "";
+          const list = luaWords.filter(item =>
+            item.startsWith(prefix) && item !== prefix
+          );
+          return {
+            list:list,
+            from:CodeMirror.Pos(start.line,start.ch-prefix.length),
+            to:start
+          };
+        }, {completeSingle:false});
+      }
+    });
+    applyEditorSettings();
   }
-  issues.push('This is not a full Lua compiler. No code was executed.');
-  log('[CHECK]\n- ' + issues.join('\n- '));
-  setStatus('Draft check finished. See the console.');
-}
-function exportAll() {
-  downloadFile(
-    'deltax-scripts-backup.json',
-    JSON.stringify(scripts, null, 2),
-    'application/json'
-  );
-  log('[BACKUP] Exported saved scripts.');
-}
-function deleteAll() {
-  if (!confirm('Delete every saved script? This cannot be undone.')) return;
-  scripts = [];
-  currentId = null;
-  persist();
-  setStatus('All saved scripts deleted.');
-  log('[DELETE] All saved scripts removed.');
-}
-$('saveBtn').addEventListener('click', saveScript);
-$('newBtn').addEventListener('click', newScript);
-$('exportBtn').addEventListener('click', exportScript);
-$('importBtn').addEventListener('click', () => $('file').click());
-$('file').addEventListener('change', importScript);
-$('checkBtn').addEventListener('click', checkDraft);
-$('clearBtn').addEventListener('click', () => {
-  if (confirm('Clear the editor text?')) {
-    $('code').value = '';
-    saveDraft();
-    setStatus('Editor cleared.');
+  const first = Object.entries(scripts)
+    .sort((a,b) => (b[1].updated || 0) - (a[1].updated || 0))[0];
+  if (first) {
+    openScript(first[0]);
+  } else {
+    activeId = newId();
+    $("fileName").value = "MyScript";
+    $("folderName").value = "General";
+    scripts[activeId] = {
+      name:"MyScript",
+      folder:"General",
+      code:currentCode(),
+      created:Date.now(),
+      updated:Date.now(),
+      favorite:false,
+      history:[]
+    };
+    persist();
+    renderScripts();
+    updateStats();
+    updateFavoriteButton();
   }
-});
-$('clearConsoleBtn').addEventListener('click', () => {
-  $('console').textContent = '[INFO] Console cleared.';
-});
-$('backupBtn').addEventListener('click', exportAll);
-$('deleteAllBtn').addEventListener('click', deleteAll);
-$('code').addEventListener('input', saveDraft);
-$('name').addEventListener('input', saveDraft);
-try {
-  const draft = JSON.parse(localStorage.getItem(DRAFT) || 'null');
-  if (draft) {
-    if (typeof draft.name === 'string') $('name').value = draft.name;
-    if (typeof draft.code === 'string') $('code').value = draft.code;
-    if (draft.id) currentId = draft.id;
-  }
-} catch (error) {
-  // Start with the default draft if saved draft data is invalid.
-}
-renderSaved();
+  updateStats();
+  renderScripts();
+  log("DeltaX Studio Ultimate initialized.", "success");
+  log("Tip: use Export Full Backup to keep a copy of your scripts.", "info");
+})();
 </script>
 </body>
+</html>
